@@ -5,8 +5,29 @@ const API_URL =
     ? process.env.API_URL
     : process.env.NEXT_PUBLIC_API_URL;
 
-export async function apiFetch<T>(path: string): Promise<T> {
-  const res = await fetch(`${API_URL}${path}`);
+type FetchOptions = {
+  params?: Record<string, string>;
+  method?: string;
+  body?: unknown;
+  credentials?: RequestCredentials;
+};
+
+export async function apiFetch<T>(path: string, options: FetchOptions = {}): Promise<T> {
+  const { params, method = "GET", body, credentials } = options;
+
+  const url = new URL(`${API_URL}${path}`);
+  if (params) {
+    Object.entries(params).forEach(([key, value]) => {
+      if (value) url.searchParams.set(key, value);
+    });
+  }
+
+  const res = await fetch(url.toString(), {
+    method,
+    credentials,
+    headers: body ? { "Content-Type": "application/json" } : undefined,
+    body: body ? JSON.stringify(body) : undefined,
+  });
 
   if (!res.ok) {
     throw new Error(`API error: ${res.status}`);

@@ -1,30 +1,20 @@
+import Header from "@/components/Header";
+import PostFilteredList from "@/components/PostFilteredList";
 import { apiFetch } from "@/lib/api";
-
-type HealthResponse = {
-  status: string;
-};
+import type { Post, Tag } from "@/lib/types";
 
 export default async function Home() {
-  let status = "接続失敗";
-
-  try {
-    const data = await apiFetch<HealthResponse>("/health");
-    status = data.status;
-  } catch {
-    // バックエンドが起動していない場合
-  }
+  const [posts, tags] = await Promise.all([
+    apiFetch<Post[]>("/posts"),
+    apiFetch<Tag[]>("/tags"),
+  ]);
 
   return (
-    <main className="flex min-h-screen items-center justify-center">
-      <div className="text-center">
-        <h1 className="text-2xl font-bold mb-4">MyBlog Portfolio</h1>
-        <p className="text-zinc-600">
-          API ステータス:{" "}
-          <span className={status === "ok" ? "text-green-600" : "text-red-600"}>
-            {status}
-          </span>
-        </p>
-      </div>
-    </main>
+    <>
+      <Header />
+      <main className="max-w-4xl mx-auto px-4 py-10 w-full">
+        <PostFilteredList posts={posts} tags={tags} />
+      </main>
+    </>
   );
 }
