@@ -1,0 +1,14 @@
+# 環境変数
+.env
+
+# macOS
+.DS_Store
+
+# エディタ
+.idea/
+.vscode/
+.cursor/
+*.swp
+
+# Docker
+docker-compose.override.yml
