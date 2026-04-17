@@ -23,9 +23,10 @@ export default function AdminPostsPage() {
   }, [status]);
 
   const filtered = posts.filter((p) => {
+    const matchStatus = status === "" || p.status === status;
     const matchKeyword = keyword === "" || p.title.toLowerCase().includes(keyword.toLowerCase());
     const matchTag = selectedTag === "" || p.tags.some((t) => t.slug === selectedTag);
-    return matchKeyword && matchTag;
+    return matchStatus && matchKeyword && matchTag;
   });
 
   return (
