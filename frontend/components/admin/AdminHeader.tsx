@@ -8,6 +8,7 @@ export default function AdminHeader() {
 
   async function handleLogout() {
     await fetch("/api/admin/logout", { method: "POST" });
+    sessionStorage.removeItem("admin_token");
     router.push("/admin/login");
   }
 

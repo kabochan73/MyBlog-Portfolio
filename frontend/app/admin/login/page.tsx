@@ -16,16 +16,27 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const res = await fetch("/api/admin/login", {
+      // ① ブラウザから直接 Laravel にログイン（セッションクッキーがブラウザにセットされる）
+      const laravelRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/admin/login`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+        },
         body: JSON.stringify({ email, password }),
       });
 
-      if (!res.ok) {
+      if (!laravelRes.ok) {
         setError("メールアドレスまたはパスワードが正しくありません。");
         return;
       }
+
+      const { token } = await laravelRes.json();
+      sessionStorage.setItem("admin_token", token);
+
+      // ② Next.js 側に is_admin クッキーをセット（管理画面のルートガード用）
+      await fetch("/api/admin/login", { method: "POST" });
 
       router.push("/admin/posts");
     } catch {

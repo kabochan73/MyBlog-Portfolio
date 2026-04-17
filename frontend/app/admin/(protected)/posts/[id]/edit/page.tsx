@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import PostForm from "@/components/admin/PostForm";
+import { adminFetch } from "@/lib/api";
+import { apiFetch } from "@/lib/api";
 import type { Post, Tag } from "@/lib/types";
 
 export default function EditPostPage() {
@@ -12,10 +14,8 @@ export default function EditPostPage() {
 
   useEffect(() => {
     Promise.all([
-      fetch(`${process.env.NEXT_PUBLIC_API_URL}/admin/posts/${id}`, {
-        credentials: "include",
-      }).then((res) => res.json()),
-      fetch(`${process.env.NEXT_PUBLIC_API_URL}/tags`).then((res) => res.json()),
+      adminFetch<Post>(`/posts/${id}`),
+      apiFetch<Tag[]>("/tags"),
     ]).then(([postData, tagsData]) => {
       setPost(postData);
       setTags(tagsData);

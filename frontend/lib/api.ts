@@ -36,3 +36,32 @@ export async function apiFetch<T>(path: string, options: FetchOptions = {}): Pro
 
   return res.json();
 }
+
+const ADMIN_API_URL = process.env.NEXT_PUBLIC_API_URL;
+
+type AdminFetchOptions = {
+  method?: string;
+  body?: unknown;
+};
+
+export async function adminFetch<T = void>(path: string, options: AdminFetchOptions = {}): Promise<T> {
+  const { method = "GET", body } = options;
+  const token = sessionStorage.getItem("admin_token");
+
+  const res = await fetch(`${ADMIN_API_URL}/admin${path}`, {
+    method,
+    headers: {
+      "Accept": "application/json",
+      ...(token ? { "Authorization": `Bearer ${token}` } : {}),
+      ...(body ? { "Content-Type": "application/json" } : {}),
+    },
+    body: body ? JSON.stringify(body) : undefined,
+  });
+
+  if (!res.ok) {
+    throw new Error(`API error: ${res.status}`);
+  }
+
+  if (res.status === 204) return undefined as T;
+  return res.json();
+}

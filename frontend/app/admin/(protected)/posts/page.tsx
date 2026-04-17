@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import AdminPostList from "@/components/admin/AdminPostList";
+import { adminFetch } from "@/lib/api";
 import type { Post } from "@/lib/types";
 
 export default function AdminPostsPage() {
@@ -13,11 +14,7 @@ export default function AdminPostsPage() {
 
   useEffect(() => {
     const params = status ? `?status=${status}` : "";
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/admin/posts${params}`, {
-      credentials: "include",
-    })
-      .then((res) => res.json())
-      .then(setPosts);
+    adminFetch<Post[]>(`/posts${params}`).then(setPosts).catch(console.error);
   }, [status]);
 
   return (

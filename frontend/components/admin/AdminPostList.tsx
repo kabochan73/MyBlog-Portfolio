@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import TagBadge from "@/components/TagBadge";
+import { adminFetch } from "@/lib/api";
 import type { Post } from "@/lib/types";
 
 type Props = {
@@ -18,11 +19,7 @@ export default function AdminPostList({ posts }: Props) {
 
   async function handleDelete(id: number) {
     if (!confirm("この記事を削除しますか？")) return;
-
-    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/admin/posts/${id}`, {
-      method: "DELETE",
-      credentials: "include",
-    });
+    await adminFetch(`/posts/${id}`, { method: "DELETE" });
     router.refresh();
   }
 
@@ -48,16 +45,10 @@ export default function AdminPostList({ posts }: Props) {
               </div>
             </div>
             <div className="flex items-center gap-3 shrink-0">
-              <Link
-                href={`/admin/posts/${post.id}/edit`}
-                className="text-sm text-zinc-600 hover:text-zinc-900"
-              >
+              <Link href={`/admin/posts/${post.id}/edit`} className="text-sm text-zinc-600 hover:text-zinc-900">
                 編集
               </Link>
-              <button
-                onClick={() => handleDelete(post.id)}
-                className="text-sm text-red-500 hover:text-red-700"
-              >
+              <button onClick={() => handleDelete(post.id)} className="text-sm text-red-500 hover:text-red-700">
                 削除
               </button>
             </div>

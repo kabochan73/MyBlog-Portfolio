@@ -1,9 +1,11 @@
 "use client";
 
+import { useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
+import { adminFetch } from "@/lib/api";
 import type { Post, Tag } from "@/lib/types";
 
 const schema = z.object({
@@ -24,6 +26,7 @@ type Props = {
 export default function PostForm({ allTags, post }: Props) {
   const router = useRouter();
   const isEdit = !!post;
+  const [serverError, setServerError] = useState("");
 
   const {
     register,
@@ -53,20 +56,19 @@ export default function PostForm({ allTags, post }: Props) {
   }
 
   async function onSubmit(data: FormValues) {
-    const url = isEdit
-      ? `${process.env.NEXT_PUBLIC_API_URL}/admin/posts/${post.id}`
-      : `${process.env.NEXT_PUBLIC_API_URL}/admin/posts`;
-
-    const res = await fetch(url, {
-      method: isEdit ? "PUT" : "POST",
-      credentials: "include",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    });
-
-    if (res.ok) {
+    setServerError("");
+    try {
+      const path = isEdit ? `/posts/${post.id}` : "/posts";
+      const method = isEdit ? "PUT" : "POST";
+      const body = {
+        ...data,
+        published_at: data.status === "published" ? new Date().toISOString() : null,
+      };
+      await adminFetch(path, { method, body });
       router.push("/admin/posts");
       router.refresh();
+    } catch {
+      setServerError("保存に失敗しました。入力内容を確認してください。");
     }
   }
 
@@ -135,6 +137,8 @@ export default function PostForm({ allTags, post }: Props) {
           ))}
         </div>
       </div>
+
+      {serverError && <p className="text-sm text-red-500">{serverError}</p>}
 
       <div className="flex gap-3">
         <button

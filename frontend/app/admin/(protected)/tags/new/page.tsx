@@ -1,9 +1,11 @@
 "use client";
 
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
+import { adminFetch } from "@/lib/api";
 
 const schema = z.object({
   name: z.string().min(1, "タグ名は必須です"),
@@ -14,6 +16,7 @@ type FormValues = z.infer<typeof schema>;
 
 export default function NewTagPage() {
   const router = useRouter();
+  const [serverError, setServerError] = useState("");
   const {
     register,
     handleSubmit,
@@ -21,15 +24,12 @@ export default function NewTagPage() {
   } = useForm<FormValues>({ resolver: zodResolver(schema) });
 
   async function onSubmit(data: FormValues) {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/admin/tags`, {
-      method: "POST",
-      credentials: "include",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    });
-
-    if (res.ok) {
+    setServerError("");
+    try {
+      await adminFetch("/tags", { method: "POST", body: data });
       router.push("/admin/tags");
+    } catch {
+      setServerError("作成に失敗しました。スラッグまたはタグ名が重複している可能性があります。");
     }
   }
 
@@ -56,6 +56,7 @@ export default function NewTagPage() {
           />
           {errors.slug && <p className="mt-1 text-xs text-red-500">{errors.slug.message}</p>}
         </div>
+        {serverError && <p className="text-xs text-red-500">{serverError}</p>}
         <div className="flex gap-3">
           <button
             type="submit"
