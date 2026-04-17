@@ -1,15 +1,11 @@
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import AdminHeader from "@/components/admin/AdminHeader";
-import { apiFetch } from "@/lib/api";
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const cookieStore = await cookies();
-  const cookieHeader = cookieStore.toString();
 
-  try {
-    await apiFetch("/admin/posts", { headers: { Cookie: cookieHeader } });
-  } catch {
+  if (!cookieStore.has("is_admin")) {
     redirect("/admin/login");
   }
 

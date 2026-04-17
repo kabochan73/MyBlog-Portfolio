@@ -7,10 +7,7 @@ export default function AdminHeader() {
   const router = useRouter();
 
   async function handleLogout() {
-    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/logout`, {
-      method: "POST",
-      credentials: "include",
-    });
+    await fetch("/api/admin/logout", { method: "POST" });
     router.push("/admin/login");
   }
 
