@@ -10,10 +10,11 @@ type FetchOptions = {
   method?: string;
   body?: unknown;
   credentials?: RequestCredentials;
+  headers?: Record<string, string>;
 };
 
 export async function apiFetch<T>(path: string, options: FetchOptions = {}): Promise<T> {
-  const { params, method = "GET", body, credentials } = options;
+  const { params, method = "GET", body, credentials, headers: extraHeaders } = options;
 
   const url = new URL(`${API_URL}${path}`);
   if (params) {
@@ -25,7 +26,7 @@ export async function apiFetch<T>(path: string, options: FetchOptions = {}): Pro
   const res = await fetch(url.toString(), {
     method,
     credentials,
-    headers: body ? { "Content-Type": "application/json" } : undefined,
+    headers: { ...(body ? { "Content-Type": "application/json" } : {}), ...extraHeaders },
     body: body ? JSON.stringify(body) : undefined,
   });
 
