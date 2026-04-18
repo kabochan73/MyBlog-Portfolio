@@ -5,8 +5,8 @@ import type { Post, Tag } from "@/lib/types";
 
 export default async function Home() {
   const [posts, tags] = await Promise.all([
-    apiFetch<Post[]>("/posts"),
-    apiFetch<Tag[]>("/tags"),
+    apiFetch<Post[]>("/posts", { cache: "force-cache" }),
+    apiFetch<Tag[]>("/tags", { cache: "force-cache" }),
   ]);
 
   return (

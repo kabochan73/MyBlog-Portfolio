@@ -65,6 +65,11 @@ export default function PostForm({ allTags, post }: Props) {
         published_at: data.status === "published" ? new Date().toISOString() : null,
       };
       await adminFetch(path, { method, body });
+      await fetch("/api/revalidate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ slug: data.slug }),
+      });
       router.push("/admin/posts");
       router.refresh();
     } catch {

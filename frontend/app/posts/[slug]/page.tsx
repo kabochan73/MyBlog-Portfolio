@@ -4,9 +4,14 @@ import { apiFetch } from "@/lib/api";
 import type { Post } from "@/lib/types";
 import Markdown from "react-markdown";
 
+export async function generateStaticParams() {
+  const posts = await apiFetch<Post[]>("/posts");
+  return posts.map((post) => ({ slug: post.slug }));
+}
+
 export default async function PostPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const post = await apiFetch<Post>(`/posts/${slug}`);
+  const post = await apiFetch<Post>(`/posts/${slug}`, { cache: "force-cache" });
 
   return (
     <>
