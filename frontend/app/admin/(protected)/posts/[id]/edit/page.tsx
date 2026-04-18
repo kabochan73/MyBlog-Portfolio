@@ -1,28 +1,15 @@
-"use client";
-
-import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
 import PostForm from "@/components/admin/PostForm";
-import { adminFetch } from "@/lib/api";
-import { apiFetch } from "@/lib/api";
+import { adminFetch, apiFetch } from "@/lib/api";
 import type { Post, Tag } from "@/lib/types";
 
-export default function EditPostPage() {
-  const { id } = useParams<{ id: string }>();
-  const [post, setPost] = useState<Post | null>(null);
-  const [tags, setTags] = useState<Tag[]>([]);
+type Props = { params: Promise<{ id: string }> };
 
-  useEffect(() => {
-    Promise.all([
-      adminFetch<Post>(`/posts/${id}`),
-      apiFetch<Tag[]>("/tags"),
-    ]).then(([postData, tagsData]) => {
-      setPost(postData);
-      setTags(tagsData);
-    });
-  }, [id]);
-
-  if (!post) return <p className="text-zinc-400">読み込み中...</p>;
+export default async function EditPostPage({ params }: Props) {
+  const { id } = await params;
+  const [post, tags] = await Promise.all([
+    adminFetch<Post>(`/posts/${id}`, { cache: "no-store" }),
+    apiFetch<Tag[]>("/tags", { cache: "no-store" }),
+  ]);
 
   return (
     <div>

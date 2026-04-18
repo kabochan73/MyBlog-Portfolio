@@ -1,33 +1,18 @@
-"use client";
-
-import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import AdminPostList from "@/components/admin/AdminPostList";
 import { adminFetch, apiFetch } from "@/lib/api";
-import FilterSidebar from "@/components/FilterSidebar";
+import AdminPostFilteredList from "@/components/admin/AdminPostFilteredList";
 import type { Post, Tag } from "@/lib/types";
 
-export default function AdminPostsPage() {
-  const searchParams = useSearchParams();
-  const status = searchParams.get("status") ?? "";
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [tags, setTags] = useState<Tag[]>([]);
-  const [keyword, setKeyword] = useState("");
-  const [selectedTag, setSelectedTag] = useState("");
+type Props = { searchParams: Promise<{ status?: string }> };
 
-  useEffect(() => {
-    const params = status ? `?status=${status}` : "";
-    adminFetch<Post[]>(`/posts${params}`).then(setPosts).catch(console.error);
-    apiFetch<Tag[]>("/tags").then(setTags).catch(console.error);
-  }, [status]);
+export default async function AdminPostsPage({ searchParams }: Props) {
+  const { status = "" } = await searchParams;
+  const params = status ? `?status=${status}` : "";
 
-  const filtered = posts.filter((p) => {
-    const matchStatus = status === "draft" ? p.status === "draft" : p.status === "published";
-    const matchKeyword = keyword === "" || p.title.toLowerCase().includes(keyword.toLowerCase());
-    const matchTag = selectedTag === "" || p.tags.some((t) => t.slug === selectedTag);
-    return matchStatus && matchKeyword && matchTag;
-  });
+  const [posts, tags] = await Promise.all([
+    adminFetch<Post[]>(`/posts${params}`, { cache: "no-store" }),
+    apiFetch<Tag[]>("/tags", { cache: "no-store" }),
+  ]);
 
   return (
     <div>
@@ -42,18 +27,7 @@ export default function AdminPostsPage() {
           新規作成
         </Link>
       </div>
-      <div className="flex gap-8 items-start">
-        <div className="flex-3 min-w-0">
-          <AdminPostList posts={filtered} />
-        </div>
-        <FilterSidebar
-          tags={tags}
-          keyword={keyword}
-          selectedTag={selectedTag}
-          onKeywordChange={setKeyword}
-          onTagChange={setSelectedTag}
-        />
-      </div>
+      <AdminPostFilteredList posts={posts} tags={tags} status={status} />
     </div>
   );
 }

@@ -1,17 +1,9 @@
-"use client";
-
-import { useEffect, useState } from "react";
 import PostForm from "@/components/admin/PostForm";
+import { apiFetch } from "@/lib/api";
 import type { Tag } from "@/lib/types";
 
-export default function NewPostPage() {
-  const [tags, setTags] = useState<Tag[]>([]);
-
-  useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/tags`)
-      .then((res) => res.json())
-      .then(setTags);
-  }, []);
+export default async function NewPostPage() {
+  const tags = await apiFetch<Tag[]>("/tags", { cache: "no-store" });
 
   return (
     <div>

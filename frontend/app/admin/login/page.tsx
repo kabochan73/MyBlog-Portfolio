@@ -33,10 +33,13 @@ export default function LoginPage() {
       }
 
       const { token } = await laravelRes.json();
-      sessionStorage.setItem("admin_token", token);
 
-      // ② Next.js 側に is_admin クッキーをセット（管理画面のルートガード用）
-      await fetch("/api/admin/login", { method: "POST" });
+      // ② Next.js 側に is_admin・admin_token クッキーをセット
+      await fetch("/api/admin/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token }),
+      });
 
       router.push("/admin/posts");
     } catch {

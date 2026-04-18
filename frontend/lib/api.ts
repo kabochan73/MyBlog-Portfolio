@@ -11,10 +11,11 @@ type FetchOptions = {
   body?: unknown;
   credentials?: RequestCredentials;
   headers?: Record<string, string>;
+  cache?: RequestCache;
 };
 
 export async function apiFetch<T>(path: string, options: FetchOptions = {}): Promise<T> {
-  const { params, method = "GET", body, credentials, headers: extraHeaders } = options;
+  const { params, method = "GET", body, credentials, headers: extraHeaders, cache } = options;
 
   const url = new URL(`${API_URL}${path}`);
   if (params) {
@@ -28,6 +29,7 @@ export async function apiFetch<T>(path: string, options: FetchOptions = {}): Pro
     credentials,
     headers: { ...(body ? { "Content-Type": "application/json" } : {}), ...extraHeaders },
     body: body ? JSON.stringify(body) : undefined,
+    ...(cache ? { cache } : {}),
   });
 
   if (!res.ok) {
@@ -37,16 +39,29 @@ export async function apiFetch<T>(path: string, options: FetchOptions = {}): Pro
   return res.json();
 }
 
-const ADMIN_API_URL = process.env.NEXT_PUBLIC_API_URL;
+const ADMIN_API_URL =
+  typeof window === "undefined"
+    ? process.env.API_URL
+    : process.env.NEXT_PUBLIC_API_URL;
 
 type AdminFetchOptions = {
   method?: string;
   body?: unknown;
+  cache?: RequestCache;
 };
 
 export async function adminFetch<T = void>(path: string, options: AdminFetchOptions = {}): Promise<T> {
-  const { method = "GET", body } = options;
-  const token = sessionStorage.getItem("admin_token");
+  const { method = "GET", body, cache } = options;
+
+  let token: string | undefined;
+  if (typeof window === "undefined") {
+    const { cookies } = await import("next/headers");
+    const cookieStore = await cookies();
+    token = cookieStore.get("admin_token")?.value;
+  } else {
+    const raw = document.cookie.split("; ").find((r) => r.startsWith("admin_token="))?.split("=").slice(1).join("=");
+    token = raw ? decodeURIComponent(raw) : undefined;
+  }
 
   const res = await fetch(`${ADMIN_API_URL}/admin${path}`, {
     method,
@@ -56,6 +71,7 @@ export async function adminFetch<T = void>(path: string, options: AdminFetchOpti
       ...(body ? { "Content-Type": "application/json" } : {}),
     },
     body: body ? JSON.stringify(body) : undefined,
+    ...(cache ? { cache } : {}),
   });
 
   if (!res.ok) {

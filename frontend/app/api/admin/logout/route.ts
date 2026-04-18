@@ -8,6 +8,7 @@ export async function POST() {
 
   const response = NextResponse.json({ ok: true });
   response.cookies.delete("is_admin");
+  response.cookies.delete("admin_token");
 
   return response;
 }
