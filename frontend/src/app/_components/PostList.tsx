@@ -32,7 +32,7 @@ export default function PostList({ posts, tags }: Props) {
             {filtered.map((post) => (
               <li key={post.id} className="border-b pb-6 transition-transform duration-200 hover:-translate-y-1">
                 <Link href={`/posts/${post.slug}`} className="hover:underline">
-                  <h2 className="text-lg font-semibold">{post.title}</h2>
+                  <h2 className="text-3xl font-semibold">{post.title}</h2>
                 </Link>
                 <div className="mt-1 flex items-center gap-3 text-sm text-gray-500">
                   <time>

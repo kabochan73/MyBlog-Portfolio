@@ -37,7 +37,7 @@ export default function AdminPostList({ posts, tags }: Props) {
               >
                 <div>
                   <Link href={`/admin/posts/${post.id}/edit`} className="hover:underline">
-                    <h2 className="text-lg font-semibold">{post.title}</h2>
+                    <h2 className="text-3xl font-semibold">{post.title}</h2>
                   </Link>
                   <div className="mt-1 flex items-center gap-3 text-sm text-gray-500">
                     <span className={post.status === 'published' ? 'text-green-600' : 'text-gray-400'}>
