@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { getPost, getPosts } from '@/lib/api'
 import MarkdownRenderer from '@/app/_components/MarkdownRenderer'
@@ -42,6 +43,11 @@ export default async function PostPage({ params }: Props) {
         </div>
       </header>
       <MarkdownRenderer content={post.body} />
+      <div className="mt-12">
+        <Link href="/" className="text-xl flex justify-end text-gray-500 hover:text-gray-900">
+          一覧に戻る
+        </Link>
+      </div>
     </article>
   )
 }

@@ -23,7 +23,7 @@ export default function Filter({ keyword, tag, tags, onKeywordChange, onTagChang
       <div className="flex flex-wrap gap-2">
         <button
           onClick={() => onTagChange('')}
-          className={`rounded-full px-3 py-1 text-sm ${tag === '' ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
+          className={`rounded-full px-3 py-1 text-sm transition-transform duration-200 hover:-translate-y-1 ${tag === '' ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
         >
           すべて
         </button>
@@ -31,7 +31,7 @@ export default function Filter({ keyword, tag, tags, onKeywordChange, onTagChang
           <button
             key={t.id}
             onClick={() => onTagChange(tag === t.slug ? '' : t.slug)}
-            className={`rounded-full px-3 py-1 text-sm ${tag === t.slug ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
+            className={`rounded-full px-3 py-1 text-sm transition-transform duration-200 hover:-translate-y-1 ${tag === t.slug ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
           >
             {t.name}
           </button>
