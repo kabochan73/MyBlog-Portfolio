@@ -4,11 +4,11 @@ import { logoutAction } from '@/lib/actions'
 export default function AdminHeader() {
   return (
     <header className="border-b border-gray-400 bg-white w-full">
-      <div className="mx-auto max-w-5xl px-4 py-4 flex items-center justify-between">
+      <div className="mx-auto max-w-5xl px-4 py-4 flex flex-wrap items-center justify-between gap-3">
       <Link href="/admin/posts" className="text-2xl font-bold text-gray-900">
         記事管理
       </Link>
-      <div className="flex gap-3">
+      <div className="flex flex-wrap gap-3">
         <Link
           href="/admin/tags"
           className="rounded border border-gray-300 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"

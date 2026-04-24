@@ -53,7 +53,7 @@ export default function PostForm({ action, tags, post }: Props) {
           </div>
         </div>
         {preview ? (
-          <div className="mt-1 min-h-[480px] w-full rounded border border-gray-300 px-3 py-2">
+          <div className="mt-1 min-h-120 w-full rounded border border-gray-300 px-3 py-2">
             {body ? (
               <MarkdownRenderer content={body} />
             ) : (
@@ -72,6 +72,7 @@ export default function PostForm({ action, tags, post }: Props) {
           />
         )}
         {preview && <input type="hidden" name="body" value={body} />}
+
       </div>
 
       <div>

@@ -23,8 +23,17 @@ export default function PostList({ posts, tags }: Props) {
   }, [posts, keyword, tag])
 
   return (
-    <div className="flex gap-8">
-      <div className="flex-3">
+    <div className="flex flex-col gap-6 md:flex-row md:gap-8">
+      <div className="w-full md:flex-1 md:order-2 md:sticky md:top-8 md:self-start">
+        <Filter
+          keyword={keyword}
+          tag={tag}
+          tags={tags}
+          onKeywordChange={setKeyword}
+          onTagChange={setTag}
+        />
+      </div>
+      <div className="w-full md:flex-3 md:order-1">
         {filtered.length === 0 ? (
           <p className="text-sm text-gray-500">記事が見つかりませんでした。</p>
         ) : (
@@ -52,15 +61,6 @@ export default function PostList({ posts, tags }: Props) {
             ))}
           </ul>
         )}
-      </div>
-      <div className="flex-1 sticky top-8 self-start">
-        <Filter
-          keyword={keyword}
-          tag={tag}
-          tags={tags}
-          onKeywordChange={setKeyword}
-          onTagChange={setTag}
-        />
       </div>
     </div>
   )
