@@ -6,13 +6,14 @@ const BASE_URL =
     : (process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:8080')
 
 async function request<T>(path: string, options?: RequestInit): Promise<T> {
+  const { headers: optionHeaders, ...restOptions } = options ?? {}
   const res = await fetch(`${BASE_URL}/api${path}`, {
     headers: {
       'Content-Type': 'application/json',
       Accept: 'application/json',
-      ...((options?.headers as Record<string, string>) ?? {}),
+      ...((optionHeaders as Record<string, string>) ?? {}),
     },
-    ...options,
+    ...restOptions,
   })
   if (!res.ok) throw res
   if (res.status === 204) return undefined as T
