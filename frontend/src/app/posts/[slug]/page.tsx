@@ -25,7 +25,7 @@ export default async function PostPage({ params }: Props) {
     : ''
 
   return (
-    <article>
+    <article className="mx-auto max-w-5xl px-4 py-8">
       <header className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900">{post.title}</h1>
         <div className="mt-3 flex items-center gap-3">

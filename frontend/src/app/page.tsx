@@ -6,5 +6,9 @@ export const revalidate = false
 export default async function HomePage() {
   const [posts, tags] = await Promise.all([getPosts(), getTags()])
 
-  return <PostList posts={posts} tags={tags} />
+  return (
+    <div className="mx-auto max-w-5xl px-4 py-8">
+      <PostList posts={posts} tags={tags} />
+    </div>
+  )
 }
