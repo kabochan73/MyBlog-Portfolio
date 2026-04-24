@@ -49,7 +49,7 @@ export async function createPostAction(formData: FormData) {
     tag_ids: tagIds,
   })
 
-  revalidateTag('posts')
+  revalidateTag('posts', 'max')
   redirect('/admin/posts')
 }
 
@@ -64,14 +64,14 @@ export async function updatePostAction(id: number, formData: FormData) {
     tag_ids: tagIds,
   })
 
-  revalidateTag('posts')
+  revalidateTag('posts', 'max')
   redirect('/admin/posts')
 }
 
 export async function deletePostAction(id: number) {
   const token = await getToken()
   await api.deletePost(token, id)
-  revalidateTag('posts')
+  revalidateTag('posts', 'max')
 }
 
 // タグ
@@ -80,7 +80,7 @@ export async function createTagAction(formData: FormData) {
 
   try {
     await api.createTag(token, formData.get('name') as string)
-    revalidateTag('tags')
+    revalidateTag('tags', 'max')
   } catch {
     return { error: '同じ名前のタグが既に存在します。' }
   }
@@ -89,5 +89,5 @@ export async function createTagAction(formData: FormData) {
 export async function deleteTagAction(id: number) {
   const token = await getToken()
   await api.deleteTag(token, id)
-  revalidateTag('tags')
+  revalidateTag('tags', 'max')
 }
