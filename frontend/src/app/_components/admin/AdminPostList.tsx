@@ -55,7 +55,7 @@ export default function AdminPostList({ posts, tags }: Props) {
                     </div>
                   </div>
                 </div>
-                <div className="flex gap-4 shrink-0">
+                <div className="flex gap-4 items-center shrink-0">
                   <Link
                     href={`/admin/posts/${post.id}/edit`}
                     className="text-sm text-gray-600 hover:underline"

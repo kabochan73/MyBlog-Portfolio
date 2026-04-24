@@ -24,11 +24,11 @@ export default async function EditPostPage({ params }: Props) {
 
   return (
     <div>
-      <div className="mb-6 flex items-center gap-3">
-        <Link href="/admin/posts" className="text-sm text-gray-500 hover:underline">
-          ← 記事一覧
-        </Link>
+      <div className="mb-6 flex items-center justify-between gap-3">
         <h1 className="text-2xl font-bold text-gray-900">記事編集</h1>
+        <Link href="/admin/posts" className="text-2xl text-gray-500 hover:underline">
+          ← 記事一覧へ
+        </Link>
       </div>
       <PostForm action={action} tags={tags} post={post} />
     </div>

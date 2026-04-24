@@ -82,8 +82,9 @@ export async function createTagAction(formData: FormData) {
     await api.createTag(token, formData.get('name') as string)
     revalidateTag('tags', 'max')
   } catch {
-    return { error: '同じ名前のタグが既に存在します。' }
+    // 同名タグが存在する場合は何もしない
   }
+  redirect('/admin/tags')
 }
 
 export async function deleteTagAction(id: number) {
