@@ -40,15 +40,15 @@
 cp backend/.env.example backend/.env
 ```
 
-`backend/.env` のDB設定を確認：
+`backend/.env` のDB設定を必要に応じて変更：
 
 ```env
 DB_CONNECTION=mysql
 DB_HOST=db
 DB_PORT=3306
-DB_DATABASE=myblog
-DB_USERNAME=laravel
-DB_PASSWORD=secret
+DB_DATABASE=任意のDB名
+DB_USERNAME=任意のユーザー名
+DB_PASSWORD=任意のパスワード
 ```
 
 ### 2. Dockerコンテナ起動
