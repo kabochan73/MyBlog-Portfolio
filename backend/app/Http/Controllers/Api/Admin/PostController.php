@@ -14,6 +14,11 @@ class PostController extends Controller
         return response()->json(Post::with('tags')->latest()->get());
     }
 
+    public function show(Post $post)
+    {
+        return response()->json($post->load('tags'));
+    }
+
     public function store(Request $request)
     {
         $data = $request->validate([

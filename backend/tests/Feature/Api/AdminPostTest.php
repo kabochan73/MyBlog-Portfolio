@@ -20,6 +20,15 @@ class AdminPostTest extends TestCase
         $this->admin = User::factory()->create();
     }
 
+    public function test_admin_can_get_single_post(): void
+    {
+        $post = Post::factory()->create(['status' => 'draft']);
+
+        $response = $this->actingAs($this->admin)->getJson("/api/admin/posts/{$post->id}");
+
+        $response->assertOk()->assertJsonFragment(['id' => $post->id]);
+    }
+
     public function test_admin_can_get_all_posts(): void
     {
         Post::factory(3)->create();
