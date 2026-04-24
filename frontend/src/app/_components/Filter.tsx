@@ -12,7 +12,7 @@ type Props = {
 
 export default function Filter({ keyword, tag, tags, onKeywordChange, onTagChange }: Props) {
   return (
-    <div className="mb-8 space-y-4">
+    <div className="space-y-4">
       <input
         type="text"
         value={keyword}
