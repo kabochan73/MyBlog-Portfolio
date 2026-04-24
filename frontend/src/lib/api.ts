@@ -54,6 +54,12 @@ export const adminGetPosts = (token: string) =>
     cache: 'no-store',
   })
 
+export const adminGetPost = (token: string, id: number) =>
+  request<Post>(`/admin/posts/${id}`, {
+    headers: { Authorization: `Bearer ${token}` },
+    cache: 'no-store',
+  })
+
 export const createPost = (token: string, data: object) =>
   request<Post>('/admin/posts', {
     method: 'POST',
