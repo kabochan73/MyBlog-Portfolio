@@ -1,15 +1,15 @@
 # MyBlog Portfolio
 
-個人技術ブログ。記事の投稿・管理ができる管理者1名のシングルユーザー構成。
+簡単な個人技術ブログです。アウトプット用です。zennやqiitaを使わず自分で作って投稿している理由は、アプリを作る練習のためと、クソ記事で汚さないためです。５回くらい作り直してるので、Nextjsの構成には少し自信があります。余談ですがこのアプリを作る過程でかなりNextjsが上達しました！
 
 ## 技術スタック
 
-| レイヤー | 技術 |
-|---|---|
+| レイヤー       | 技術                                              |
+| -------------- | ------------------------------------------------- |
 | フロントエンド | Next.js 16 / React 19 / TypeScript / Tailwind CSS |
-| バックエンド | Laravel / PHP 8.4 / Laravel Sanctum |
-| データベース | MySQL 8.0 |
-| インフラ | Docker / Nginx |
+| バックエンド   | Laravel / PHP 8.4 / Laravel Sanctum               |
+| データベース   | MySQL 8.0                                         |
+| インフラ       | Docker / Nginx                                    |
 
 ## 機能
 
@@ -69,8 +69,8 @@ docker compose exec backend php artisan db:seed
 
 ## アクセス先
 
-| サービス | URL |
-|---|---|
-| フロントエンド | http://localhost:3000 |
+| サービス        | URL                   |
+| --------------- | --------------------- |
+| フロントエンド  | http://localhost:3000 |
 | バックエンドAPI | http://localhost:8080 |
-| MySQL | localhost:3306 |
+| MySQL           | localhost:3306        |
