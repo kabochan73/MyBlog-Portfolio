@@ -23,7 +23,7 @@
 
 | サービス        | URL                                                             |
 | --------------- | --------------------------------------------------------------- |
-| フロントエンド  | https://my-blog-portfolio-frontend-uze3.vercel.app              |
+| フロントエンド  | https://my-blog-portfolio-frontend.vercel.app                   |
 | バックエンドAPI | https://myblog-portfolio-backend-main-mhns9h.free.laravel.cloud |
 
 ## ディレクトリ構成
