@@ -1,15 +1,15 @@
 # MyBlog Portfolio
 
-簡単な個人技術ブログです。アウトプット用です。zennやqiitaを使わず自分で作って投稿している理由は、アプリを作る練習のためと、クソ記事で汚さないためです。５回くらい作り直してるので、Nextjsの構成には少し自信があります。余談ですがこのアプリを作る過程でかなりNextjsが上達しました！
+簡単な個人技術ブログです。アウトプット用でアピール用です。zennやqiitaを使わず自分で作って投稿している理由は、アプリを作る練習のためと、クソ記事で汚さないためです。５回くらい作り直してるので、Nextjsの構成には少し自信があります。余談ですがこのアプリを作る過程でかなりNextjsが上達しました！
 
 ## 技術スタック
 
-| レイヤー       | 技術                                              |
-| -------------- | ------------------------------------------------- |
-| フロントエンド | Next.js 16 / React 19 / TypeScript / Tailwind CSS |
-| バックエンド   | Laravel / PHP 8.4 / Laravel Sanctum               |
-| データベース   | MySQL 8.0                                         |
-| インフラ       | Docker / Nginx                                    |
+| レイヤー       | 技術                                                           |
+| -------------- | -------------------------------------------------------------- |
+| フロントエンド | Next.js 16 / React 19 / TypeScript / Tailwind CSS / Node.js 24 |
+| バックエンド   | Laravel 13 / PHP 8.5 / Laravel Sanctum                         |
+| データベース   | PostgreSQL                                                     |
+| インフラ       | Laravel Cloud（バックエンド） / Vercel（フロントエンド）       |
 
 ## 機能
 
@@ -19,36 +19,28 @@
 - タグ管理
 - 管理者認証（メール＋パスワード）
 
+## デプロイ先
+
+| サービス        | URL                                                             |
+| --------------- | --------------------------------------------------------------- |
+| フロントエンド  | https://my-blog-portfolio-frotned-uze3.vercel.app               |
+| バックエンドAPI | https://myblog-portfolio-backend-main-mhns9h.free.laravel.cloud |
+
 ## ディレクトリ構成
 
 ```
 .
 ├── backend/        # Laravel
 ├── frontend/       # Next.js
-└── docker/
-    ├── php/        # PHP 8.4-fpm + Composer
-    ├── nginx/      # Nginxリバースプロキシ
-    ├── mysql/      # MySQL設定
-    └── node/       # Node.js 20
+└── docker/         # ローカル開発用
 ```
 
-## 起動方法
+## ローカル開発
 
 ### 1. 環境変数の設定
 
 ```bash
 cp backend/.env.example backend/.env
-```
-
-`backend/.env` のDB設定を必要に応じて変更：
-
-```env
-DB_CONNECTION=mysql
-DB_HOST=db
-DB_PORT=3306
-DB_DATABASE=任意のDB名
-DB_USERNAME=任意のユーザー名
-DB_PASSWORD=任意のパスワード
 ```
 
 ### 2. Dockerコンテナ起動
@@ -67,10 +59,9 @@ docker compose exec backend php artisan migrate
 docker compose exec backend php artisan db:seed
 ```
 
-## アクセス先
+## ローカルアクセス先
 
 | サービス        | URL                   |
 | --------------- | --------------------- |
 | フロントエンド  | http://localhost:3000 |
 | バックエンドAPI | http://localhost:8080 |
-| MySQL           | localhost:3306        |
